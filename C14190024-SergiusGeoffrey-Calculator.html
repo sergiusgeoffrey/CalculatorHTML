@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<title>Calculator - C14190024 - Sergius Geoffrey</title>
+
+<!-- BOOTSTRAP -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- BOOTSTRAP -->
+<!-- CSS -->
+<style>
+    .layar {
+        height: 70px;
+        display: flex;
+        justify-content: right;
+        padding: 10px;
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+<!-- CSS -->
+
+<!-- JQUERY -->
+<script>
+    $(document).ready(function () {
+        var result = 0;
+        var temp = 0;
+        var opr = ' ';
+        var number = '0';
+        updateScreen(result);
+
+        $('.btn').click(function (evt) {
+            var btn = $(this).html();
+            console.log(btn);
+            if (btn === "<b>C</b>") {     //CLEAR
+                result = 0;
+                number = '0';
+                opr = ' ';
+            }
+            else if (btn === "<b>CE</b>") { //CLEAR
+                number = '0';
+                result = 0;
+                opr = ' ';
+            }
+            else if (btn === "<b>⌫</b>") {   //MENGHAPUS SATU ANGKA
+                number = number.substring(0, number.length - 1);
+            }
+            else if (btn === "+/-") {//MENGGANTI KE POSITIF/NEGATIF
+                number *= -1;
+            }
+            else if (btn === '<b>.</b>') {
+                //CHECK APAKAH SUDAH ADA KOMA ATAU BELUM
+                var check = number.includes('.');
+                if (!check)
+                    number += '.';
+            }
+            else if (isNumber(btn)) { //CHECK BILA ANGKA
+                if (number === '0')
+                    number = btn;
+                else
+                    number = number + btn;
+            }
+            else if (isOperator(btn)) { //CHECK BILA OPERATOR
+                temp = parseFloat(number);
+                opr = btn;
+                number = '';
+            }
+            else if (btn === '<b>=</b>') { //UNTUK MELAKUKAN OPERASI
+                number = operate(temp, number, opr);
+                opr = ' ';
+            }
+            //UPDATE SCREEN DISPLAY
+            updateScreen(number);
+        });
+    });
+    
+
+    //UPDATING LAYAR
+    updateScreen = function (display) {
+        var display = display.toString();
+        $('#display').html(display.substring(0, 10));
+    };
+
+    //CEK APAKAH ANGKA ATAU OPERATOR
+    isNumber = function (value) {
+        return value === '0' || value === '1' || value === '2' || value === '3' || value === '4' || value === '5' || value === '6' || value === '7' || value === '8' || value === '9';
+    }
+    isOperator = function (value) {
+        return value === '<b>/</b>' || value === '<b>x</b>' || value === '<b>+</b>' || value === '<b>-</b>';
+    };
+
+    //UNTUK MENGHITUNG ANGKA YANG DI-INPUT
+    operate = function (a, b, opr) {
+        a = parseFloat(a);
+        b = parseFloat(b);
+        if (opr === '<b>+</b>')
+            return a + b;
+        if (opr === '<b>-</b>')
+            return a - b;
+        if (opr === '<b>x</b>')
+            return a * b;
+        if (opr === '<b>/</b>')
+            return a / b;
+        console.log(a, b, opr);
+    }
+</script>
+<!-- JQUERY -->
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- JUDUL -->
+        <div class="jumbotron center">
+            <h1>CALCULATOR BY Sergius Geoffrey - C14190024</h1>
+        </div>
+        <!-- CALCULATOR DISPLAY -->
+        <table class="table center">
+            <tbody class="table-dark">
+                <tr class="layar">
+                    <td class=" col bg-warning">
+                        <p id="display"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="btn custom btn-info"><b>CE</b></button></td>
+                    <td><button type="button" class="btn custom btn-info"><b>C</b></button></td>
+                    <td><button type="button" class="btn custom btn-warning"><b>⌫</b></button></td>
+                    <td><button type="button" class="btn custom btn-danger"><b>/</b></button>
+                </tr>
+                <tr>
+                    <td><button type="button" class="btn custom btn-success">7</button></td>
+                    <td><button type="button" class="btn custom btn-success">8</button></td>
+                    <td><button type="button" class="btn custom btn-success">9</button></td>
+                    <td><button type="button" class="btn custom btn-danger"><b>x</b></button></td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="btn custom btn-success">4</button></td>
+                    <td><button type="button" class="btn custom btn-success">5</button></td>
+                    <td><button type="button" class="btn custom btn-success">6</button></td>
+                    <td><button type="button" class="btn custom btn-danger"><b>-</b></button></td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="btn custom btn-success">1</button></td>
+                    <td><button type="button" class="btn custom btn-success">2</button></td>
+                    <td><button type="button" class="btn custom btn-success">3</button></td>
+                    <td><button type="button" class="btn custom btn-danger"><b>+</b></button></td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="btn custom btn-success">+/-</button></td>
+                    <td><button type="button" class="btn custom btn-success">0</button></td>
+                    <td><button type="button" class="btn custom btn-warning"><b>.</b></button></td>
+                    <td><button type="button" class="btn custom btn-primary"><b>=</b></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
